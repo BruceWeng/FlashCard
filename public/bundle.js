@@ -25,21 +25,50 @@ function (state, action) {
 };
 */
 
-store.subscribe(function () {
-  console.log(store.getState());
-});
+var App = function App(props) {
+  return React.createElement(
+    'div',
+    { className: 'app' },
+    props.children
+  );
+};
 
-store.dispatch({
-  type: 'ADD_CARD',
-  data: {
-    front: 'front',
-    back: 'back'
+var Sidebar = React.createClass({
+  displayName: 'Sidebar',
+  render: function render() {
+    var props = this.props;
+
+    return React.createElement(
+      'div',
+      { className: 'sidebar' },
+      React.createElement(
+        'h2',
+        null,
+        ' All Decks '
+      ),
+      React.createElement(
+        'ul',
+        null,
+        props.decks.map(function (deck, i) {
+          return React.createElement(
+            'li',
+            { key: i },
+            ' ',
+            deck.name,
+            ' '
+          );
+        })
+      ),
+      props.addingDeck && React.createElement('input', { ref: 'add' })
+    );
   }
 });
 
-store.dispatch({
-  type: 'ADD_CARD',
-  data: {}
-});
+ReactDOM.render(React.createElement(
+  App,
+  null,
+  ' ',
+  React.createElement(Sidebar, { decks: [{ name: 'Deck 1' }], addingDeck: true })
+), document.getElementById('root'));
 
 },{}]},{},[1]);
