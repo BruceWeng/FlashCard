@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "watchify src/app.js -o public/bundle.js -t [ babelify --presets [ react es2015 ] ]",
-    "server": "cd public; live-server --port=1234 --entry-file=index.html" 
+    "server": "cd public; live-server --port=1234 --entry-file=index.html"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,9 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
     "live-server": "^1.0.0",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "redux": "^3.5.2",
     "watchify": "^3.7.0"
   }
 }
