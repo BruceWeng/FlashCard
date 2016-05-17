@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {addDeck, showAddDeck, hideAddDeck} from '../actions.js';
 
 /*ES5*/
