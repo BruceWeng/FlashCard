@@ -1,5 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import {addDeck, showAddDeck, hideAddDeck} from '../actions.js';
+
+/*ES5*/
+// var mapStateToProps = (state) => {
+//   return {
+//     decks: state.decks,
+//     addingDeck: state.addingDeck
+//   }
+// }
+const mapStateToProps = ({ decks, addingDeck }) => ({
+  decks,
+  addingDeck
+});
+
+const mapDispatchToProps = dispatch => ({
+  addDeck: name => dispatch(addDeck(name)),
+  showAddDeck: () => dispatch(showAddDeck()),
+  hideAddDeck: () => dispatch(hideAddDeck())
+});
 
 /*THe reason we use React.createClass here rather than pure function
 is that we will use life cycle methods*/
@@ -36,4 +56,4 @@ const Sidebar = React.createClass({
   }
 });
 
-export default Sidebar;
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
