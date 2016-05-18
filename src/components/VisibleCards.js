@@ -1,9 +1,18 @@
 import React from 'react';
+import Card from './Card';
+import {connect} from 'react-redux';
 
-const Cards = ({children}) => {
+const mapStateToProps = ({cards}, {params: {deckId}}) => ({
+  cards: cards.filter(c => c.deckId === deckId)
+});
+
+const Cards = ({cards, children}) => {
   return (
-    <div> Deck will display here {children}</div>
+    <div className='main'>
+      {cards.map(card => <Card card={card} key={card.id} />)}
+      {children}
+    </div>
   );
 };
 
-export default Cards;
+export default connect(mapStateToProps)(Cards);
