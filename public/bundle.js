@@ -26539,6 +26539,10 @@ var _reducers = require('./reducers.js');
 
 var reducers = _interopRequireWildcard(_reducers);
 
+var _localStore = require('./localStore');
+
+var localStore = _interopRequireWildcard(_localStore);
+
 var _App = require('./components/App');
 
 var _App2 = _interopRequireDefault(_App);
@@ -26553,11 +26557,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 reducers.routing = _reactRouterRedux.routerReducer;
 
-var store = Redux.createStore(Redux.combineReducers(reducers));
+var store = Redux.createStore(Redux.combineReducers(reducers), localStore.get());
 var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
 function run() {
   var state = store.getState();
+  localStore.set(state, ['decks', 'cards']);
   _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -26576,7 +26581,7 @@ function run() {
 run();
 store.subscribe(run);
 
-},{"./components/App":262,"./components/VisibleCards":264,"./reducers.js":265,"react":245,"react-dom":1,"react-redux":4,"react-router":49,"react-router-redux":16,"redux":251}],262:[function(require,module,exports){
+},{"./components/App":262,"./components/VisibleCards":264,"./localStore":265,"./reducers.js":266,"react":245,"react-dom":1,"react-redux":4,"react-router":49,"react-router-redux":16,"redux":251}],262:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26755,6 +26760,23 @@ var Cards = function Cards() {
 exports.default = Cards;
 
 },{"react":245}],265:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var get = exports.get = function get() {
+  return JSON.parse(localStorage.getItem('state')) || undefined;
+};
+var set = exports.set = function set(state, props) {
+  var toSave = {};
+  props.forEach(function (p) {
+    return toSave[p] = state[p];
+  });
+  localStorage.setItem('state', JSON.stringify(toSave));
+};
+
+},{}],266:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
