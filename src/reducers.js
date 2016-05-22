@@ -18,6 +18,8 @@ export const cardFilter = (state, action) => {
 
 export const cards = (state, action) => {
   switch (action.type) {
+    case 'RECEIVE_DATA':
+      return action.data.cards || state;
     case 'ADD_CARD':
       let newCard = Object.assign({}, action.data, {
         score: 1,
@@ -43,10 +45,13 @@ export const cards = (state, action) => {
 
 export const decks = (state, action) => {
   switch (action.type) {
+    case 'RECEIVE_DATA':
+      return action.data.decks || state;
     case 'ADD_DECK':
-    let newDeck = { name: action.data, id: +new Date };
-    return state.concat([newDeck]);
-    default: return state || [];
+      let newDeck = { name: action.data, id: +new Date };
+      return state.concat([newDeck]);
+    default:
+      return state || [];
   }
 };
 

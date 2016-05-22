@@ -4,10 +4,12 @@ import * as Redux from 'redux';
 import {Provider} from 'react-redux';
 import {Router, Route, browserHistory} from 'react-router';
 import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
-import * as reducers from './reducers.js';
+import thunkMiddleware from 'redux-thunk';
+import {fetchData} from './actions';
+import * as reducers from './reducers';
 reducers.routing = routerReducer;
 
-import * as localStore from './localStore';
+// import * as localStore from './localStore';
 
 import App from './components/App';
 import VisibleCards from './components/VisibleCards';
@@ -15,12 +17,11 @@ import NewCardModal from './components/NewCardModal';
 import EditCardModal from './components/EditCardModal';
 import StudyModal from './components/StudyModal';
 
-const store = Redux.createStore(Redux.combineReducers(reducers), localStore.get());
+const store = Redux.createStore(Redux.combineReducers(reducers), Redux.applyMiddleware(thunkMiddleware));
 const history = syncHistoryWithStore(browserHistory, store);
 
 function run () {
   let state = store.getState();
-  localStore.set(state, ['decks', 'cards']);
   ReactDOM.render(
     (<Provider store={store}>
       <Router history={history}>
@@ -35,5 +36,27 @@ function run () {
     </Provider>), document.getElementById('root'));
 }
 
-run();
-store.subscribe(run);
+function save () {
+  var state = store.getState();
+
+  fetch('/api/data', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      decks: state.decks,
+      cards: state.cards
+    })
+  });
+}
+
+function init () {
+  run();
+  store.subscribe(run);
+  store.subscribe(save);
+  store.dispatch(fetchData());
+}
+
+init();
