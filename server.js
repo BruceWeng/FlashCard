@@ -9,6 +9,6 @@ express()
   .get('/api/data', (req, res) => res.json(data))
   .post('/api/data', (req, res) => res.json(data = req.body))
   .get('*', (req, res) => res.sendFile(__dirname + '/public/index.html'))
-  .listen(3333);
+  .listen(process.env.PORT || 3333);
 
 console.log('Starting Server on port 3333...');
